@@ -7,19 +7,19 @@ namespace LoginSystem.Controllers
     public class LoginController : Controller
     {
         private readonly LoginService _loginService;
+        private readonly SessionService _sessionService;
 
-        public LoginController(LoginService loginService)
+        public LoginController(LoginService loginService, SessionService sessionService)
         {
             _loginService = loginService;
+            _sessionService = sessionService;
         }
 
-        // Tela de login
         public IActionResult Index()
         {
             return View();
         }
 
-        // Login POST
         [HttpPost]
         public IActionResult Index(LoginViewModel model)
         {
@@ -34,7 +34,9 @@ namespace LoginSystem.Controllers
                 return View(model);
             }
 
-            // Aqui depois vamos criar sessão
+            // 🔐 salva usuário na sessão
+            _sessionService.Login(user);
+
             return RedirectToAction("Index", "Home");
         }
     }

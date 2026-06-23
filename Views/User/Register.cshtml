@@ -1,0 +1,17 @@
+﻿@model LoginSystem.ViewModels.RegisterViewModel
+@{
+    Layout = "_Layout";
+}
+
+<h2>Cadastrar Usuário</h2>
+
+<form method="post" class="form">
+
+    <input asp-for="Name" placeholder="Nome" />
+    <input asp-for="Email" placeholder="E-mail" />
+    <input asp-for="Password" type="password" placeholder="Senha" />
+    <input asp-for="ConfirmPassword" type="password" placeholder="Confirmar senha" />
+
+    <button type="submit">Cadastrar</button>
+
+</form>

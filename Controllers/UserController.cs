@@ -1,4 +1,4 @@
-﻿using LoginSystem.Services;
+﻿using LoginSystem.Services.Interfaces;
 using LoginSystem.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,14 +6,15 @@ namespace LoginSystem.Controllers
 {
     public class UserController : Controller
     {
-        private readonly UserService _userService;
+        private readonly IUserService _userService;
 
-        public UserController(UserService userService)
+        public UserController(IUserService userService)
         {
             _userService = userService;
         }
 
         // Tela de cadastro
+        [HttpGet]
         public IActionResult Register()
         {
             return View();
@@ -21,6 +22,7 @@ namespace LoginSystem.Controllers
 
         // Cadastro POST
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Register(RegisterViewModel model)
         {
             if (!ModelState.IsValid)
@@ -34,11 +36,12 @@ namespace LoginSystem.Controllers
                     model.Password
                 );
 
+                TempData["Success"] = "Usuário criado com sucesso!";
                 return RedirectToAction("Index", "Login");
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", ex.Message);
+                ModelState.AddModelError(string.Empty, ex.Message);
                 return View(model);
             }
         }

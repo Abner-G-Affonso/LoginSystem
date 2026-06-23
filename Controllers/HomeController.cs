@@ -1,25 +1,31 @@
-using LoginSystem.Models;
+using LoginSystem.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace LoginSystem.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly SessionService _sessionService;
+
+        public HomeController(SessionService sessionService)
+        {
+            _sessionService = sessionService;
+        }
+
         public IActionResult Index()
         {
+            if (!_sessionService.IsLogged())
+                return RedirectToAction("Index", "Login");
+
+            ViewBag.User = _sessionService.GetUser();
+
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Logout()
         {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            _sessionService.Logout();
+            return RedirectToAction("Index", "Login");
         }
     }
 }

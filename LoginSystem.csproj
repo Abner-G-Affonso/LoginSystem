@@ -7,9 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
-    <Folder Include="Views\Login\" />
-    <Folder Include="Views\User\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\fonts\" />
   </ItemGroup>
